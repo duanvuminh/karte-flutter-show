@@ -9,12 +9,37 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: <String, WidgetBuilder>{
+        '/a': (BuildContext context) => const MyPage(title: 'waite 5 minutes'),
+      },
+      home: Home(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class MyPage extends StatelessWidget {
+  final String title;
+
+  const MyPage({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(title),
+    );
+  }
+}
+
+class Home extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => _Home();
+}
+
+class _Home extends State<Home>{
   bool _isPresenting = false;
 
   @override
@@ -42,41 +67,48 @@ class _MyAppState extends State<MyApp> {
       _isPresenting = isPresenting;
     });
   }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('KARTE InAppMessaging example app'),
-        ),
-        body: Center(
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('isPresenting:  $_isPresenting'),
-              ElevatedButton(
-                onPressed: () => initPlatformState(),
-                child: Text("checkPresent"),
-              ),
-              ElevatedButton(
-                onPressed: () => InAppMessaging.dismiss(),
-                child: Text("dismiss"),
-              ),
-              ElevatedButton(
-                onPressed: () => InAppMessaging.suppress(),
-                child: Text("suppress"),
-              ),
-              ElevatedButton(
-                onPressed: () => InAppMessaging.unsuppress(),
-                child: Text("unsuppress"),
-              ),
-              ElevatedButton(
-                onPressed: () => Tracker.view("popup"),
-                child: Text("view"),
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('KARTE InAppMessaging example app'),
+      ),
+      body: Center(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('isPresenting:  $_isPresenting'),
+            ElevatedButton(
+              onPressed: () => initPlatformState(),
+              child: Text("checkPresent"),
+            ),
+            ElevatedButton(
+              onPressed: () => InAppMessaging.dismiss(),
+              child: Text("dismiss"),
+            ),
+            ElevatedButton(
+              onPressed: () => InAppMessaging.suppress(),
+              child: Text("suppress"),
+            ),
+            ElevatedButton(
+              onPressed: () => InAppMessaging.unsuppress(),
+              child: Text("unsuppress"),
+            ),
+            ElevatedButton(
+              onPressed: () => Tracker.view("hello"),
+              child: Text("say hello"),
+            ),
+            ElevatedButton(
+              onPressed: () => Tracker.identify({
+                "user_id": "08020018"
+              }),
+              child: Text("login"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pushNamed("/a"),
+              child: Text("Go page A"),
+            ),
+          ],
         ),
       ),
     );
